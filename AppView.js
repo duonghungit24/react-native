@@ -1,10 +1,11 @@
 import React from 'react';
 import {View, StyleSheet} from 'react-native';
 import Refresh from './src/refreshControl';
+import ListArr from './src/flastList';
 const AppView = () => {
   return (
     <View style={styles.container}>
-      <Refresh />
+      <ListArr />
     </View>
   );
 };

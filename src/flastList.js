@@ -1,5 +1,5 @@
 import React, {useState} from 'react';
-import {View, Text, StyleSheet, FlatList} from 'react-native';
+import {View, Text, StyleSheet, FlatList, RefreshControl} from 'react-native';
 
 const ListArr = () => {
   const [list, setList] = useState([
@@ -12,8 +12,14 @@ const ListArr = () => {
     {key: '7', name: 'item7'},
     {key: '8', name: 'item8'},
     {key: '9', name: 'item9'},
-    {key: '1', name: 'item10'},
+    {key: '2', name: 'item10'},
   ]);
+  const [refresh, setRefresh] = useState(false);
+  const handleReFresh = () => {
+    setRefresh(true);
+    setList([...list, {key: 5, name: 'item 0'}]);
+    setRefresh(false);
+  };
   return (
     <View style={styles.container}>
       <FlatList
@@ -24,6 +30,9 @@ const ListArr = () => {
           </View>
         )}
         keyExtractor={(e, index) => index.toString()}
+        refreshControl={
+          <RefreshControl refreshing={refresh} onRefresh={handleReFresh} />
+        }
       />
     </View>
   );
