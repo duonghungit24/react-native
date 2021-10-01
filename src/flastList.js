@@ -1,5 +1,12 @@
-import React, {useState} from 'react';
-import {View, Text, StyleSheet, FlatList, RefreshControl} from 'react-native';
+import React, {useState, useEffect} from 'react';
+import {
+  View,
+  Text,
+  StyleSheet,
+  FlatList,
+  RefreshControl,
+  TextInput,
+} from 'react-native';
 
 const ListArr = () => {
   const [list, setList] = useState([
@@ -20,10 +27,28 @@ const ListArr = () => {
     setList([...list, {key: 5, name: 'item 0'}]);
     setRefresh(false);
   };
+
+  //filter search
+  const [data, setData] = useState([]);
+  const [search, setSearch] = useState(false);
+  const handleSearch = text => {
+    setSearch(true);
+    const dataSearch = list.filter(i => {
+      if (i.name.toUpperCase().includes(text.toUpperCase())) {
+        return i;
+      }
+    });
+    console.log(data);
+    setData(dataSearch);
+  };
   return (
     <View style={styles.container}>
+      <TextInput
+        style={{borderWidth: 1, borderColor: 'red'}}
+        onChangeText={text => handleSearch(text)}
+      />
       <FlatList
-        data={list}
+        data={search ? data : list}
         renderItem={({item}) => (
           <View style={styles.wrapper}>
             <Text style={styles.titleText}>{item.name}</Text>
