@@ -6,6 +6,7 @@ import {
   FlatList,
   RefreshControl,
   TextInput,
+  Button,
 } from 'react-native';
 
 const ListArr = () => {
@@ -24,8 +25,22 @@ const ListArr = () => {
   const [refresh, setRefresh] = useState(false);
   const handleReFresh = () => {
     setRefresh(true);
-    setList([...list, {key: 5, name: 'item 0'}]);
+    setList([...list, {key: 5, title: 'item 0'}]);
     setRefresh(false);
+  };
+  useEffect(() => {
+    ListData();
+    return () => {};
+  }, []);
+  const urlApi = 'https://jsonplaceholder.typicode.com/posts';
+  const ListData = async () => {
+    try {
+      const res = await fetch(urlApi);
+      const data = await res.json();
+      setList(data);
+    } catch (error) {
+      console.log('error: ', error);
+    }
   };
 
   //filter search
@@ -34,24 +49,26 @@ const ListArr = () => {
   const handleSearch = text => {
     setSearch(true);
     const dataSearch = list.filter(i => {
-      if (i.name.toUpperCase().includes(text.toUpperCase())) {
+      if (i.title.toUpperCase().includes(text.toUpperCase())) {
         return i;
       }
     });
-    console.log(data);
     setData(dataSearch);
   };
   return (
     <View style={styles.container}>
       <TextInput
         style={{borderWidth: 1, borderColor: 'red'}}
-        onChangeText={text => handleSearch(text)}
+        onChangeText={text => {
+          handleSearch(text);
+        }}
       />
+
       <FlatList
         data={search ? data : list}
         renderItem={({item}) => (
           <View style={styles.wrapper}>
-            <Text style={styles.titleText}>{item.name}</Text>
+            <Text style={styles.titleText}>{item.title}</Text>
           </View>
         )}
         keyExtractor={(e, index) => index.toString()}
