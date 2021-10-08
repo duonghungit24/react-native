@@ -5,29 +5,42 @@ import {
   StyleSheet,
   TextInput,
   Pressable,
-  Alert,
+  Modal,
 } from 'react-native';
 
 const Refresh = () => {
   const [name, setName] = useState('');
   const [submit, setSubmit] = useState(false);
+  const [show, setShow] = useState(false);
   const onPressHandler = () => {
     if (name.length > 5) {
       setSubmit(!submit);
+      if (submit) setName('');
     } else {
-      Alert.alert(
-        'warning',
-        'phải nhập trên 10 kí tự',
-        [
-          {text: 'dont show it', onPress: () => console.warn('dont show')},
-          {text: 'cancle', onPress: () => console.warn('cancle')},
-        ],
-        {cancelable: true},
-      );
+      setShow(true);
     }
   };
   return (
     <View style={styles.container}>
+      <Modal
+        visible={show}
+        transparent
+        onRequestClose={() => setShow(false)}
+        animationType="slide">
+        <View style={styles.wrapModal}>
+          <View style={styles.viewModal}>
+            <View style={styles.warningModal}>
+              <Text style={styles.titleText}>Warning</Text>
+            </View>
+            <Text style={styles.textModal}>
+              số ký tự phải nhập lớn hơn 5 kí tự
+            </Text>
+            <Pressable onPress={() => setShow(false)} style={styles.btnModal}>
+              <Text>Ok</Text>
+            </Pressable>
+          </View>
+        </View>
+      </Modal>
       <Text style={styles.titleText}>Mời bạn nhập họ và tên</Text>
       <TextInput
         style={styles.textInput}
@@ -75,6 +88,41 @@ const styles = StyleSheet.create({
     color: '#fff',
     fontSize: 18,
     textAlign: 'center',
+  },
+  wrapModal: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+    backgroundColor: '#00000099',
+  },
+  viewModal: {
+    width: 300,
+    height: 300,
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    backgroundColor: '#fff',
+    borderRadius: 10,
+  },
+  textModal: {
+    fontSize: 18,
+    marginTop: 10,
+    textAlign: 'center',
+  },
+  btnModal: {
+    width: 35,
+    height: 30,
+    borderRadius: 5,
+    alignItems: 'center',
+    justifyContent: 'center',
+    backgroundColor: 'red',
+    marginBottom: 10,
+  },
+  warningModal: {
+    width: '100%',
+    backgroundColor: 'yellow',
+    alignItems: 'center',
+    borderRadius: 10,
+    padding: 10,
   },
 });
 export default Refresh;
