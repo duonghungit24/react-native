@@ -32,7 +32,7 @@ const ListArr = () => {
     ListData();
     return () => {};
   }, []);
-  const urlApi = 'https://jsonplaceholder.typicode.com/posts';
+  const urlApi = 'http://jsonplaceholder.typicode.com/posts';
   const ListData = async () => {
     try {
       const res = await fetch(urlApi);
